@@ -9,7 +9,6 @@ const cors = require('cors');
 app.use(cors({
   origin: ["http://localhost:3000", "https://aurashop-frontend.vercel.app"],
   methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
 }));
 app.options("*", cors());
 app.use(express.json());
