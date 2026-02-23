@@ -6,7 +6,12 @@ const app = express();
 const cors = require('cors');
 
 // middleware
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:3000", "https://aurashop-frontend.vercel.app"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+app.options("*", cors());
 app.use(express.json());
 
 const ConnectToMongo = require('./db');
