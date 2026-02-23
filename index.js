@@ -19,7 +19,7 @@ const ConnectToMongo = require('./db');
 ConnectToMongo();
 
 // start server
-const portnum = process.env.PORT|| 7002;
+const portnum = process.env.PORT;
 app.listen(portnum, () => {
     console.log("server is running on the portnumber: " + portnum);
 });
