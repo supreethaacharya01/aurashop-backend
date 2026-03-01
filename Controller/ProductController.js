@@ -4,7 +4,7 @@ const Category = require('../Models/CategoryModel');
 const AddProduct = async (req, res) => {
   try {
     const { pname, pdesc, pprice, pqty, catid } = req.body;
-    const UserImage = req.file ? req.file.filename : null;
+    const UserImage = req.file ? req.file.path : null;
       const category = await Category.findById(catid);
 
     const newProduct = new Product({

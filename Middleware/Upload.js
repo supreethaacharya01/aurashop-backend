@@ -1,14 +1,20 @@
-const multer =require('multer');
-const storage=multer.diskStorage({
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-    destination:function(req,file,cb){
-        cb(null,'Uploads/')  //this is a folderwhere files will be saved
-    },
-    filename:function(req,file,cb){  //generate a unique name of datetime and some random numbers
-       const uniquename=Date.now()+ "-" + Math.round(Math.random()*1E9)
-       cb(null,file.fieldname + '-' + uniquename)
-    }
-})
-const upload=multer({storage:storage})
-module.exports=upload;
-//set the destination folder where file should be save or stored
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'aurashop-products',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+  },
+});
+
+const upload = multer({ storage });
+module.exports = upload;
