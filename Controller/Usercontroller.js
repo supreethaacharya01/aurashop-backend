@@ -3,24 +3,29 @@ const bcrypt=require("bcryptjs")
 const jwt=require('jsonwebtoken')
 const SECRET_KEY="mernstack";
 
-const Adduser=async(req,res)=>{
+const Adduser = async (req, res) => {
     try {
-        const {uname,uemail,upassword,uphone,uaddress}=req.body;
-         const hashpassword= await bcrypt.hash(upassword,10)
-        const  newuser=new User({
-            name:uname,
-            email:uemail,
-            password:hashpassword,
-            phone:uphone,
-            address:uaddress
-        })
-       await newuser.save();
-       res.status(201).json({message:"user created" , newuser})
-       
-        
+        const { uname, uemail, upassword, uphone, uaddress } = req.body;
+
+        // ✅ Add this validation
+        if (!uname || !uemail || !upassword) {
+            return res.status(400).json({ message: "Name, email, and password are required" });
+        }
+
+        const hashpassword = await bcrypt.hash(upassword, 10);
+        const newuser = new User({
+            name: uname,
+            email: uemail,
+            password: hashpassword,
+            phone: uphone,
+            address: uaddress
+        });
+        await newuser.save();
+        res.status(201).json({ message: "user created", newuser });
+
     } catch (error) {
-       
-         res.status(500).json({message:"server error",error})
+        console.log("Adduser error:", error); // ✅ Log the actual error
+        res.status(500).json({ message: "server error", error: error.message });
     }
 }
 
