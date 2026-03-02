@@ -12,7 +12,8 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'aurashop-products',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    format: async (req, file) => 'jpg',
+    public_id: (req, file) => Date.now() + '-' + file.originalname,
   },
 });
 
