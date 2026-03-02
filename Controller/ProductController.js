@@ -5,8 +5,15 @@ const AddProduct = async (req, res) => {
   try {
     const { pname, pdesc, pprice, pqty, catid } = req.body;
     const UserImage = req.file ? req.file.path : null;
-      const category = await Category.findById(catid);
 
+    console.log("📦 req.file:", req.file);        // ← ADD THIS
+    console.log("🖼️ UserImage:", UserImage);       // ← ADD THIS
+    console.log("☁️ Cloudinary config:", {         // ← ADD THIS
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.CLOUD_API_KEY,
+    });
+
+    const category = await Category.findById(catid);
     const newProduct = new Product({
       product_name: pname,
       product_desc: pdesc,
@@ -15,17 +22,14 @@ const AddProduct = async (req, res) => {
       product_qty: pqty,
       categoryId: catid,
       category_name: category ? category.category_name : ""
-
     });
 
     await newProduct.save();
     res.status(201).json({ message: "Product is added", newProduct });
-    console.log(newProduct);
-    console.log("Product is added!!");
 
   } catch (error) {
-    res.status(500).json({ message: "server error", error });
-    console.log(error);
+    console.log("❌ AddProduct error:", error);  // ← ADD THIS
+    res.status(500).json({ message: "server error", error: error.message });
   }
 }
 
